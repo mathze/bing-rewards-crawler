@@ -1,0 +1,51 @@
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+= Bing Rewards Crawler
+
+== Usage
+[IMPORTANT]
+.Prerequirst
+====
+You must have setup a profile that is already logged in to microsoft!
+====
+
+=== ETree
+[source,powershell]
+----
+./gradlew :run --args='etree'
+----
+
+=== Weather
+
+- Time based rewards (08-10 o'clock, 12-14 o'clock, 16-18 o'clock)
++
+[source,powershell]
+----
+./gradlew :run --args='weather -s time'
+----
+
+- Click based rewards
++
+[source,powershell]
+----
+./gradlew :run --args='weather -s clicks'
+----
+
+- All
++
+[source,powershell]
+----
+./gradlew :run --args='weather -s time -s clicks'
+----
+
+=== All together
+[source,powershell]
+----
+./gradlew :run --args='etree weather -s time -s clicks'
+----
