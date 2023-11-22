@@ -29,7 +29,6 @@ class Weather : CliktCommand() {
 
   override fun run() = scenarios.forEach {
     when (it) {
-      // TODO make time based working
       Scenario.TIME -> BingWeatherPage.retrieveTimeBasedPoints(setup)
       Scenario.CLICKS -> BingWeatherPage(setup).run {
         open()

@@ -6,7 +6,7 @@ class MockDate extends OriginDate {
 
   constructor(...args) {
     const params = (args && args.length) ? args : [(MockDate.currentTimeStamp + MockDate.getTick())]
-    super(...args)
+    super(...params)
   }
 
   static [Symbol.hasInstance](instance) {

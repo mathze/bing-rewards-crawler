@@ -5,18 +5,21 @@ ifdef::env-github[]
 :caution-caption: :fire:
 :warning-caption: :warning:
 endif::[]
+:toc:
 
 = Bing Rewards Crawler
 
 == Usage
+
 [IMPORTANT]
-.Prerequirst
+.Prerequisite
 ====
-You must have setup a profile that is already logged in to microsoft!
+You must have set up a profile that is already logged in to microsoft!
 ====
 
 === ETree
-[source,powershell]
+
+[source,shell]
 ----
 ./gradlew :run --args='etree'
 ----
@@ -25,27 +28,69 @@ You must have setup a profile that is already logged in to microsoft!
 
 - Time based rewards (08-10 o'clock, 12-14 o'clock, 16-18 o'clock)
 +
-[source,powershell]
+[source,shell]
 ----
 ./gradlew :run --args='weather -s time'
 ----
 
 - Click based rewards
 +
-[source,powershell]
+[source,shell]
 ----
 ./gradlew :run --args='weather -s clicks'
 ----
 
 - All
 +
-[source,powershell]
+[source,shell]
 ----
 ./gradlew :run --args='weather -s time -s clicks'
 ----
 
-=== All together
-[source,powershell]
+=== Rewards
+
+- Collect points by doing random bing searches
++
+[source,shell]
 ----
-./gradlew :run --args='etree weather -s time -s clicks'
+./gradlew :run --args='rewards -s search'
+----
+
+- Daily challenges #atm Not working#
++
+[source,shell]
+----
+./gradlew :run --args='rewards -s daily_set'
+----
+
+- Normal challenges #atm Not working#
++
+[source,shell]
+----
+./gradlew :run --args='rewards -s other_activities'
+----
+
+=== All together
+
+[source,shell]
+----
+./gradlew :run --args='etree weather -s time -s clicks rewards -s search'
+----
+
+== Alternative
+
+To avoid permanent gradle build stuff you should build the jar and start it.
+Starting a jar from commandline is quite verbose. You could craft a start script
+or let gradle do it for you. To do so, simply run:
+[source,shell]
+----
+./gradlew :installDist
+----
+
+This will generate everything for you and put it under './build/install/bing-rewards-crawler'.
+Within its 'bin' folder you will find the appropriate scripts.
+With this, you can start the tasks by
+[source,shell]
+----
+./bing-rewards-crawler etree weather -s time -s clicks rewards -s search
 ----

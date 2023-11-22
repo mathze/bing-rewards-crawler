@@ -10,7 +10,7 @@ open class Page(setup: DriverSetup) : Closeable {
   protected fun open(url: String) {
     page.apply {
       val script = javaClass.getResource("/timeMock.js")?.run {
-        readText().replace("%{baseTime}", baseTime.toString())
+        readText().replaceFirst("%{baseTime}", baseTime.toString())
       }
       addInitScript(script ?: "")
     }.navigate(url)
