@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.types.enum
 import com.microsoft.playwright.Playwright
 import de.memathze.bing.crawler.core.BrowserKind
 import de.memathze.bing.crawler.core.DriverSetup
+import de.memathze.bing.crawler.core.log
 import de.memathze.bing.crawler.pages.etree.ETreePage
 import de.memathze.bing.crawler.pages.rewards.RewardsPage
 import de.memathze.bing.crawler.pages.weather.BingWeatherPage
@@ -23,11 +24,12 @@ class Main(private val playwright: Playwright) : CliktCommand(allowMultipleSubco
 
 class Weather : CliktCommand() {
 
-  private val scenarios by option("-s", "-scenarios").enum<Scenario>().multiple(required = true)
+  private val scenarios by option("-s", "--scenario").enum<Scenario>().multiple(required = true)
 
   private val setup by requireObject<DriverSetup>()
 
   override fun run() = scenarios.forEach {
+    log().info("Starting Weather scenario $it...")
     when (it) {
       Scenario.TIME -> BingWeatherPage.retrieveTimeBasedPoints(setup)
       Scenario.CLICKS -> BingWeatherPage(setup).run {
@@ -36,6 +38,7 @@ class Weather : CliktCommand() {
         close()
       }
     }
+    log().info("Finished Weather scenario $it")
   }
 
   private enum class Scenario {
@@ -47,27 +50,31 @@ class Weather : CliktCommand() {
 class ETree : CliktCommand() {
   private val setup by requireObject<DriverSetup>()
   override fun run() = ETreePage(setup).run {
+    log().info("Starting ETree point retrieval...")
     open()
     receiveDailyPoints()
     close()
+    log().info("Finished ETree point retrieval")
   }
 }
 
 class Rewards : CliktCommand() {
 
 
-  private val scenarios by option("-s", "-scenarios").enum<Scenario>().multiple(required = true)
+  private val scenarios by option("-s", "-scenario").enum<Scenario>().multiple(required = true)
   private val setup by requireObject<DriverSetup>()
 
   override fun run() = RewardsPage(setup).run {
     scenarios.sortedBy {
       it.ordinal
     }.forEach {
+      log().info("Starting Rewards scenario $it...")
       when (it) {
         Scenario.DAILY_SET -> doDailyChallenges()
         Scenario.OTHER_ACTIVITIES -> doNormalChallenges()
         Scenario.SEARCH -> doDailySearchChallenge()
       }
+      log().info("Finished Rewards scenario $it")
     }
   }
 
